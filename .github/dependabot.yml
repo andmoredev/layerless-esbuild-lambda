@@ -13,6 +13,18 @@ updates:
         patterns:
           - "*"
 
+  - package-ecosystem: "npm"
+    directory: "/functions"
+    commit-message:
+      prefix: chore
+      include: scope
+    schedule:
+      interval: "daily"
+    groups:
+      npm-dependencies-root:
+        patterns:
+          - "*"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     commit-message:
