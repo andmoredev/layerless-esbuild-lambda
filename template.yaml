@@ -26,6 +26,13 @@ Resources:
     Properties:
       CodeUri: functions
       Handler: echo/index.handler
+      Events:
+        EchoEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref API
+            Path: /echo
+            Method: POST
       Policies:
         - AWSLambdaBasicExecutionRole
     Metadata:
