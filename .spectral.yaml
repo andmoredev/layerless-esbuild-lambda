@@ -1,0 +1,118 @@
+extends: spectral:oas
+rules:
+  openapi-tags-alphabetical: false
+  contact-properties: false
+  info-license: false
+  license-url: false
+
+  # ERRORS
+  operation-success-response: error
+  operation-operationId-unique: error
+  operation-parameters: error
+  path-params: error
+  info-contact: error
+  info-description: error
+  no-$ref-siblings: error
+  no-eval-in-markdown: error
+  no-script-tags-in-markdown: error
+  openapi-tags: error
+  operation-description: error
+  operation-operationId: error
+  operation-operationId-valid-in-url: error
+  operation-singular-tag: error
+  operation-tags: error
+  operation-tag-defined: error
+  path-declarations-must-exist: error
+  path-keys-no-trailing-slash: error
+  path-not-include-query: error
+  tag-description: error
+  typed-enum: error
+  duplicated-entry-in-enum: error
+  oas3-api-servers: error
+  oas3-examples-value-or-externalValue: error
+  oas3-operation-security-defined: error
+  oas3-server-not-example.com: error
+  oas3-server-trailing-slash: error
+  oas3-unused-component: error
+  oas3-valid-media-example: error
+  oas3-valid-schema-example: error
+  oas3-schema: error
+  oas3-parameter-description: error
+
+  openapi-v3-query-parameters-kebab-case:
+    description: Ensuring that all query parameters are using kebab case for the
+      name.
+    message: The query parameters name needs to be kebabCase.
+    given: "$..parameters..[?(@.in==='query')]"
+    severity: error
+    then:
+      field: name
+      function: casing
+      functionOptions:
+        type: kebab
+
+  openapi-v3-operations-operation-ids-camel-case:
+    description: Ensures that each of the operations IDs are camel case.
+    message: Your operations IDs need to be camel case.
+    given: "$.paths.*[get,post,patch,put,delete].operationId"
+    severity: error
+    then:
+      function: casing
+      functionOptions:
+        type: camel
+
+  openapi-v3-component-keys-camel-case:
+    description: Ensuring that all components keys are using camel case for the
+      name.
+    message: The component key needs to be camelCase.
+    given: "$.components.*"
+    severity: error
+    then:
+      field: "@key"
+      function: casing
+      functionOptions:
+        type: camel
+
+  openapi-v3-property-keys-camel-case:
+    description: Ensuring that all components schemas are using camel case for the
+      name.
+    message: The property key needs to be camelCase.
+    given: "$..properties"
+    severity: error
+    then:
+      field: "@key"
+      function: casing
+      functionOptions:
+        type: camel
+
+  openapi-v3-path-camel-case:
+    description: Ensuring that all paths are using kebab case.
+    message: The path name needs to be kebabCase.
+    given: "$.paths[*]~"
+    severity: error
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: "^(\/|[a-z0-9-.]+|{[a-zA-Z0-9]+})+$"
+
+  # WARN
+  openapi-v3-schema-properties-define-number-boundaries:
+    description: Ensures that all number properties have boundaries defined.
+    message: Numeric types need to have a minimum and maximum property defined.
+    given: "$..[?(@.type==='integer')]"
+    severity: warn
+    then:
+      field: minimum
+      function: defined
+      field: maximum
+      function: defined
+
+   openapi-v3-post-put-patch-endpoint-requires-x-amazon-apigateway-request-validator:
+    description: Ensures all endpoints have the x-amazon-apigateway-request-validator attribute
+    message: Every endpoint requires x-amazon-apigateway-request-validator attribute
+    given: $.paths.*[get,post,patch,put,delete]
+    severity: error
+    then:
+      field: x-amazon-apigateway-request-validator
+      function: truthy

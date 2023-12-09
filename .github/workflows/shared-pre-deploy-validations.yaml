@@ -1,0 +1,35 @@
+name: Pre-deployment Validations
+
+on:
+  workflow_call:
+
+jobs:
+  eslint:
+    name: Lint JS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure NPM
+        run: |
+          npm ci
+          npm run lint
+
+  spectral:
+    name: Lint OpenAPI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint OpenAPI
+        run: |
+          npm install -g @stoplight/spectral-cli
+          spectral lint schemas/openapi.yaml
+
+  unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit Tests
+        run: |
+          npm ci
+          npm run coverage

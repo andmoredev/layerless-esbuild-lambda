@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "tests": {
+    "contractTests": [
+      {
+        "openApiOperation": "*::/*",
+        "statusSuccess": {
+          "enabled": true
+        }
+      },
+      {
+        "openApiOperation": "*::/*",
+        "responseTime": {
+          "enabled": false,
+          "maxMs": 1500
+        }
+      },
+      {
+        "openApiOperation": "*::/*",
+        "contentType": {
+          "enabled": true
+        }
+      },
+      {
+        "openApiOperation": "*::/*",
+        "jsonBody": {
+          "enabled": true
+        }
+      },
+      {
+        "openApiOperation": "*::/*",
+        "schemaValidation": {
+          "enabled": true
+        }
+      },
+      {
+        "openApiOperation": "*::/*",
+        "headersPresent": {
+          "enabled": true
+        }
+      }
+    ],
+    "contentTests": [],
+    "extendTests": [],
+    "variationTests": [
+      {
+        "openApiOperation": "*::/*",
+        "openApiResponse": "400",
+        "variations": [
+          {
+            "name": "Bad Request",
+            "fuzzing": [
+              {
+                "requestBody": [
+                  {
+                    "requiredFields": {
+                      "enabled": true
+                    },
+                    "minimumNumberFields": {
+                      "enabled": true
+                    },
+                    "maximumNumberFields": {
+                      "enabled": true
+                    },
+                    "minLengthFields": {
+                      "enabled": true
+                    },
+                    "maxLengthFields": {
+                      "enabled": true
+                    }
+                  }
+                ]
+              }
+            ],
+            "tests": {
+              "contractTests": [
+                {
+                  "statusCode": {
+                    "enabled": true
+                  },
+                  "contentType": {
+                    "enabled": true
+                  },
+                  "jsonBody": {
+                    "enabled": true
+                  },
+                  "schemaValidation": {
+                    "enabled": true
+                  },
+                  "headersPresent": {
+                    "enabled": true
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "assignVariables": [
+  ],
+  "overwrites": [
+  ],
+  "globals": {
+    "collectionPreRequestScripts": [],
+    "keyValueReplacements": {},
+    "valueReplacements": {},
+    "rawReplacements": [],
+    "securityOverwrites": {
+      "bearer": {
+        "token": ""
+      }
+    }
+  }
+}

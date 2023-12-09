@@ -1,0 +1,63 @@
+name: Deploy API
+
+on:
+  workflow_call:
+    inputs:
+      ENVIRONMENT:
+        required: true
+        type: string
+      AWS_REGION:
+        description: AWS Region the stack is being deployed to
+        required: true
+        type: string
+    outputs:
+      API_BASE_URL:
+        description: Base URL for the API that got deployed
+        value: ${{ jobs.deploy.outputs.API_BASE_URL }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT }}
+    outputs:
+      API_BASE_URL: ${{ steps.getStackOutputs.outputs.API_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ vars.PIPELINE_EXECUTION_ROLE }}
+          role-session-name: sam-deploy
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
+
+      - name: SAM Build and Deploy
+        run: |
+          npm install -g esbuild
+          sam --info
+
+          sam build \
+          --config-file samconfig.ci.toml \
+
+          sam deploy \
+          --config-file samconfig.ci.toml \
+          --s3-bucket ${{ vars.ARTIFACTS_BUCKET_NAME }} \
+          --no-fail-on-empty-changeset \
+          --role-arn ${{ vars.CLOUDFORMATION_EXECUTION_ROLE }}
+
+      - id: getStackOutputs
+        name: Get Stack Outputs
+        run: |
+          url=$(aws cloudformation describe-stacks --stack-name ${{ inputs.STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='ApiURL'].OutputValue" --output text)
+
+          echo "# API" >> $GITHUB_STEP_SUMMARY
+          echo "* API - $url" >> $GITHUB_STEP_SUMMARY
+
+          echo "API_BASE_URL=$url" >> $GITHUB_OUTPUT

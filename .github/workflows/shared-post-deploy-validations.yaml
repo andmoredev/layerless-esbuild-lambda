@@ -1,0 +1,19 @@
+name: Post-deployment Validations
+
+on:
+  workflow_call:
+    inputs:
+      BASE_URL:
+        type: string
+        required: true
+
+jobs:
+  test-api:
+    name: Run Portman
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test API
+        run: |
+          npm ci
+          npx @apideck/portman --cliOptionsFile portman/portman-cli.json --baseUrl ${{ inputs.BASE_URL }}

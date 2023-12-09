@@ -1,0 +1,26 @@
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    commit-message:
+      prefix: chore
+      include: scope
+    schedule:
+      interval: "daily"
+    groups:
+      npm-dependencies-root:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    commit-message:
+      prefix: chore
+      include: scope
+    schedule:
+      interval: "daily"
+    groups:
+      actions:
+        patterns:
+          - "*"
