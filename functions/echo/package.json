@@ -1,0 +1,10 @@
+{
+  "name": "echo",
+  "version": "1.0.0",
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^1.12.1",
+    "@aws-lambda-powertools/metrics": "^1.12.1",
+    "@aws-lambda-powertools/tracer": "^1.12.1",
+    "@middy/core": "^3.5.0"
+  }
+}

@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.build]
+[default.build.parameters]
+cached="true"
+parallel="true"
+
+[default.deploy.parameters]
+stack_name = "layerless-esbuild-lambda"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
