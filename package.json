@@ -1,6 +1,13 @@
 {
   "name": "echo",
   "version": "1.0.0",
+  "scripts": {
+    "test": "mocha \"+(layers|functions)/*/tests/*.js\"",
+    "coverage": "c8 npm test",
+    "lint": "eslint {**,.}/*.js --no-error-on-unmatched-pattern",
+    "lint-api": "spectral lint openapi.yaml",
+    "portman": "portman --cliOptionsFile portman/portman-cli.json"
+  },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^1.17.0",
     "@aws-lambda-powertools/metrics": "^1.17.0",
