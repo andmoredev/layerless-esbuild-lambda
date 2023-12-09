@@ -35,6 +35,7 @@ jobs:
         with:
           files: "**/index.tests.js"
       - name: Unit Tests
+        if: steps.check_files.outputs.files_exists == 'true'
         run: |
           npm ci
           npm run coverage
