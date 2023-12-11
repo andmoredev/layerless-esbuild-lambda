@@ -47,7 +47,7 @@ jobs:
       - name: Dependabot metadata
         id: dependabot-metadata
         uses: dependabot/fetch-metadata@v1
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Approve a PR if not already approved
         if: ${{ steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch' || steps.dependabot-metadata.outputs.package-ecosystem == 'github_actions' }}
         env:
