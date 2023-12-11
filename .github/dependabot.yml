@@ -21,7 +21,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      npm-dependencies-root:
+      npm-dependencies-functions:
         patterns:
           - "*"
 

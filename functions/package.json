@@ -1,5 +1,5 @@
 {
-  "name": "echo",
+  "name": "function-dependencies",
   "version": "1.0.0",
   "dependencies": {
     "@aws-lambda-powertools/logger": "^1.17.0",
