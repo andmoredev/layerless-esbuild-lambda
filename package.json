@@ -12,10 +12,10 @@
     "@aws-lambda-powertools/logger": "^1.12.1",
     "@aws-lambda-powertools/metrics": "^1.12.1",
     "@aws-lambda-powertools/tracer": "^1.12.1",
-    "@middy/core": "^5.2.1"
+    "@middy/core": "^5.2.3"
   },
   "devDependencies": {
-    "c8": "^8.0.1",
+    "c8": "^9.0.0",
     "chai": "^5.0.0",
     "eslint": "^8.56.0",
     "eslint-config-google": "^0.14.0",
