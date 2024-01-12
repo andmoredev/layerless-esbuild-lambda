@@ -55,7 +55,7 @@ jobs:
       - id: getStackOutputs
         name: Get Stack Outputs
         run: |
-          url=$(aws cloudformation describe-stacks --stack-name layerless-esbuild-lambda --query "Stacks[0].Outputs[?OutputKey=='ApiURL'].OutputValue" --output text)
+          url=$(aws cloudformation describe-stacks --stack-name ${{inputs.STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='ApiURL'].OutputValue" --output text)
 
           echo "# API" >> $GITHUB_STEP_SUMMARY
           echo "* API - $url" >> $GITHUB_STEP_SUMMARY
