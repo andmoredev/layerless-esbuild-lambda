@@ -25,7 +25,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions
-      Handler: echo/index.handler
+      Handler: echo-esm/index.handler
       Events:
         EchoEvent:
           Type: Api
@@ -45,7 +45,7 @@ Resources:
         Target: es2020
         Sourcemap: false
         EntryPoints:
-          - echo/index.mjs
+          - echo-esm/index.mjs
         Banner:
           - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
@@ -66,16 +66,11 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
-        # Format: esm
         Minify: false
-        # OutExtension:
-        #   - .js=.js
         Target: es2020
         Sourcemap: false
         EntryPoints:
           - echo-js/index.js
-        # Banner:
-        #   - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
 Outputs:
   ApiURL:
