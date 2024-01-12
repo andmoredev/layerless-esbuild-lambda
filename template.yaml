@@ -21,7 +21,7 @@ Resources:
           Parameters:
             Location: ./openapi.yaml
 
-  EchoFunction:
+  EchoESMFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions
@@ -31,7 +31,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref API
-            Path: /echo
+            Path: /echo-esm
             Method: POST
       Policies:
         - AWSLambdaBasicExecutionRole
