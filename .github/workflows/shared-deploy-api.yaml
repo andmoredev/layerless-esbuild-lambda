@@ -47,7 +47,7 @@ jobs:
           sam build
 
           sam deploy \
-          --stack-name ${{inputs.STACK_NAME }}
+          --stack-name ${{inputs.STACK_NAME }} \
           --s3-bucket ${{ vars.ARTIFACTS_BUCKET_NAME }} \
           --no-fail-on-empty-changeset \
           --role-arn ${{ vars.CLOUDFORMATION_EXECUTION_ROLE }}
