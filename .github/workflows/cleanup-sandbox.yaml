@@ -1,0 +1,76 @@
+name: Cleanup Sandbox
+run-name: Cleanup ${{ github.event_name == 'workflow_dispatch' && github.ref_name || github.event_name == 'delete' && github.event.ref || github.event_name == 'pull_request' && github.head_ref }} Sandbox
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      STACK_NAME:
+        type: string
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+
+env:
+  STACK_NAME: math-operation-service
+  BRANCH_NAME: ${{ github.event_name == 'pull_request' && github.actor == 'dependabot[bot]' && inputs.STACK_NAME || github.event_name == 'workflow_dispatch' && github.ref_name || github.event_name == 'pull_request' && github.head_ref }}
+
+jobs:
+  get-stack-name:
+    name: Get Stack Name
+    runs-on: ubuntu-latest
+    outputs:
+      STACK_NAME: ${{ steps.get-stack-name-step.outputs.STACK_NAME || steps.dependabot-get-stack-name-step.outputs.STACK_NAME }}
+    steps:
+      - name: Get the data to be used as the parameters for the stack
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        id: get-stack-name-step
+        run: |
+          cleanedBranchName=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9_.-]/-/g')
+          stackNamePlusBranchName=$STACK_NAME-$cleanedBranchName
+
+          truncatedStackName="${stackNamePlusBranchName:0:128}"
+
+          echo "STACK_NAME=$truncatedStackName" >> $GITHUB_OUTPUT
+          echo "### Stack Name $truncatedStackName" >> $GITHUB_STEP_SUMMARY
+
+      - name: Get the data to be used as the parameters for the stack (dependabot)
+        if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
+        id: dependabot-get-stack-name-step
+        run: |
+          prNumber=$(echo "pr-${{ github.event.number }}")
+          stackNamePlusPrNumber=$STACK_NAME-$prNumber
+
+          echo "STACK_NAME=$stackNamePlusPrNumber" >> $GITHUB_OUTPUT
+          echo "### Stack Name (Dependabot) $stackNamePlusPrNumber" >> $GITHUB_STEP_SUMMARY
+
+  cleanup-resources:
+    name: Delete Sandbox Resources
+    needs: [get-stack-name]
+    runs-on: ubuntu-latest
+    environment: sandbox
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.PIPELINE_EXECUTION_ROLE }}
+          role-session-name: cleanup-stack
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
+
+      - name: Delete Stack
+        run: |
+          sam delete \
+          --stack-name ${{ needs.get-stack-name.outputs.STACK_NAME }} \
+          --region ${{ vars.AWS_REGION }} \
+          --no-prompts
