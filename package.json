@@ -2,7 +2,7 @@
   "name": "echo",
   "version": "1.0.0",
   "scripts": {
-    "test": "mocha \"+(layers|functions)/*/tests/*.mjs\"",
+    "test": "mocha \"./**/tests/*.mjs\"",
     "coverage": "c8 npm test",
     "lint": "eslint {**,.}/*.js --no-error-on-unmatched-pattern",
     "lint-api": "spectral lint openapi.yaml",
