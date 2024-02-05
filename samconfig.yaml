@@ -2,6 +2,7 @@ version: 0.1
 default:
   build:
     parameters:
+      manifest: './package.json'
       build_in_source: 'true'
       cached: 'true'
       parallel: 'true'

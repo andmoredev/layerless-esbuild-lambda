@@ -14,9 +14,6 @@ servers:
   - url: https://example.com/api
     description: Example URL
 
-security:
-  - jwt: [ ]
-
 x-amazon-apigateway-request-validators:
   Validate body, query string parameters, and headers:
     validateRequestParameters: true
@@ -43,7 +40,7 @@ x-amazon-apigateway-gateway-responses:
       gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
 
 paths:
-  /echo-esm:
+  /echo:
     post:
       summary: Echo body
       operationId: echo
@@ -83,51 +80,7 @@ paths:
       x-amazon-apigateway-request-validator: Validate body, query string parameters, and headers
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${EchoESMFunction.Arn}/invocations
-        httpMethod: POST
-        type: aws_proxy
-
-  /echo-js:
-    post:
-      summary: Echo body
-      operationId: echo
-      description: |
-        Test endpoint that simply echos the body.
-      tags:
-        - Tool
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-      responses:
-        '200':
-          description: 'Success'
-          content:
-            application/json:
-              schema:
-                type: object
-        '400':
-          $ref: '#/components/responses/badRequest'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - message
-                properties:
-                  message:
-                    type: string
-                    enum:
-                      - Forbidden
-        '500':
-          $ref: '#/components/responses/unexpectedError'
-      x-amazon-apigateway-request-validator: Validate body, query string parameters, and headers
-      x-amazon-apigateway-integration:
-        uri:
-          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${EchoJSFunction.Arn}/invocations
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${EchoFunction.Arn}/invocations
         httpMethod: POST
         type: aws_proxy
 
@@ -158,9 +111,3 @@ components:
             properties:
               message:
                 type: string
-
-  securitySchemes:
-    jwt:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT

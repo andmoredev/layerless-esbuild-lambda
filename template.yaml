@@ -7,7 +7,7 @@ Transform:
 Globals:
   Function:
     Timeout: 10
-    Runtime: nodejs18.x
+    Runtime: nodejs20.x
     MemorySize: 768
 
 Resources:
@@ -21,17 +21,17 @@ Resources:
           Parameters:
             Location: ./openapi.yaml
 
-  EchoESMFunction:
+  EchoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions
-      Handler: echo-esm/index.handler
+      CodeUri: src/functions/echo
+      Handler: index.handler
       Events:
         EchoEvent:
           Type: Api
           Properties:
             RestApiId: !Ref API
-            Path: /echo-esm
+            Path: /echo
             Method: POST
       Policies:
         - AWSLambdaBasicExecutionRole
@@ -40,37 +40,15 @@ Resources:
       BuildProperties:
         Format: esm
         Minify: false
+        UseNpmCi: true
         OutExtension:
           - .js=.mjs
         Target: es2020
         Sourcemap: false
         EntryPoints:
-          - echo-esm/index.mjs
+          - index.mjs
         Banner:
           - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
-
-  EchoJSFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: functions
-      Handler: echo-js/index.handler
-      Events:
-        EchoEvent:
-          Type: Api
-          Properties:
-            RestApiId: !Ref API
-            Path: /echo-js
-            Method: POST
-      Policies:
-        - AWSLambdaBasicExecutionRole
-    Metadata:
-      BuildMethod: esbuild
-      BuildProperties:
-        Minify: false
-        Target: es2020
-        Sourcemap: false
-        EntryPoints:
-          - echo-js/index.js
 
 Outputs:
   ApiURL:
