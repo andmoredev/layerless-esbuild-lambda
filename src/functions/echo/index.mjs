@@ -1,5 +1,6 @@
 import { initializePowertools, logger } from '../shared/lambda-powertools.mjs';
 import { getResponse } from '../shared/apigateway.mjs';
+import { getSecret } from '@aws-lambda-powertools/parameters/secrets';
 
 export const handler = initializePowertools(async (event, context) => {
   try {

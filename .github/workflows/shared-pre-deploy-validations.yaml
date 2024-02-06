@@ -29,13 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check file existence
-        id: check_files
-        uses: andstor/file-existence-action@v2
-        with:
-          files: "**/index.tests.mjs"
       - name: Unit Tests
-        if: steps.check_files.outputs.files_exists == 'true'
         run: |
           npm ci
           npm run coverage
