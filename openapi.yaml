@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: API Gateway with Cognito
-  description: Demonstrate how you can use cognito with API Gateway for PKCE and CCF authentication flows.
+  title: Layerless ESBuild
+  description: Demonstrate Lambda function sharing code without Layers
   contact:
     name: Andres Moreno
 
