@@ -2,7 +2,7 @@
   "name": "echo",
   "version": "1.0.0",
   "scripts": {
-    "test": "mocha \"+(layers|functions)/*/tests/*.mjs\"",
+    "test": "mocha \"./**/tests/*.mjs\"",
     "coverage": "c8 npm test",
     "lint": "eslint {**,.}/*.js --no-error-on-unmatched-pattern",
     "lint-api": "spectral lint openapi.yaml",
@@ -11,8 +11,10 @@
   "dependencies": {
     "@aws-lambda-powertools/logger": "^1.12.1",
     "@aws-lambda-powertools/metrics": "^1.12.1",
+    "@aws-lambda-powertools/parameters": "^1.18.0",
     "@aws-lambda-powertools/tracer": "^1.12.1",
-    "@middy/core": "^5.2.1"
+    "@aws-sdk/client-secrets-manager": "^3.507.0",
+    "@middy/core": "^4.7.0"
   },
   "devDependencies": {
     "c8": "^8.0.1",

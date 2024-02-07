@@ -7,8 +7,15 @@ Transform:
 Globals:
   Function:
     Timeout: 10
-    Runtime: nodejs18.x
+    Runtime: nodejs20.x
     MemorySize: 768
+    Handler: index.handler
+    Environment:
+      Variables:
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+        AWS_ACCOUNT_ID: !Sub ${AWS::AccountId}
+        POWERTOOLS_SERVICE_NAME: layerless-esbuild-lambda-api
+        POWERTOOLS_METRICS_NAMESPACE: layerless-esbuild-lambda
 
 Resources:
   API:
@@ -24,8 +31,7 @@ Resources:
   EchoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions
-      Handler: echo/index.handler
+      CodeUri: src/functions/echo
       Events:
         EchoEvent:
           Type: Api
@@ -45,9 +51,11 @@ Resources:
         Target: es2020
         Sourcemap: false
         EntryPoints:
-          - echo/index.mjs
+          - index.mjs
         Banner:
           - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
+        External:
+          - '@aws-sdk/client-secrets-manager'
 
 Outputs:
   ApiURL:

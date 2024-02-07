@@ -14,9 +14,6 @@ servers:
   - url: https://example.com/api
     description: Example URL
 
-security:
-  - jwt: [ ]
-
 x-amazon-apigateway-request-validators:
   Validate body, query string parameters, and headers:
     validateRequestParameters: true
@@ -114,9 +111,3 @@ components:
             properties:
               message:
                 type: string
-
-  securitySchemes:
-    jwt:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT

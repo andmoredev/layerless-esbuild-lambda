@@ -7,12 +7,13 @@ on:
         required: true
         type: string
       AWS_REGION:
-        description: AWS Region the stack is being deployed to
+        required: true
+        type: string
+      STACK_NAME:
         required: true
         type: string
     outputs:
       API_BASE_URL:
-        description: Base URL for the API that got deployed
         value: ${{ jobs.deploy.outputs.API_BASE_URL }}
 
 permissions:
@@ -41,13 +42,14 @@ jobs:
       - name: SAM Build and Deploy
         run: |
           npm install -g esbuild
+          npm ci
+          
           sam --info
 
-          sam build \
-          --config-file samconfig.ci.toml \
+          sam build
 
           sam deploy \
-          --config-file samconfig.ci.toml \
+          --stack-name ${{inputs.STACK_NAME }} \
           --s3-bucket ${{ vars.ARTIFACTS_BUCKET_NAME }} \
           --no-fail-on-empty-changeset \
           --role-arn ${{ vars.CLOUDFORMATION_EXECUTION_ROLE }}
@@ -55,7 +57,7 @@ jobs:
       - id: getStackOutputs
         name: Get Stack Outputs
         run: |
-          url=$(aws cloudformation describe-stacks --stack-name layerless-esbuild-lambda --query "Stacks[0].Outputs[?OutputKey=='ApiURL'].OutputValue" --output text)
+          url=$(aws cloudformation describe-stacks --stack-name ${{inputs.STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='ApiURL'].OutputValue" --output text)
 
           echo "# API" >> $GITHUB_STEP_SUMMARY
           echo "* API - $url" >> $GITHUB_STEP_SUMMARY

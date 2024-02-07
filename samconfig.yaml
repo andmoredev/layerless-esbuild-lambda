@@ -1,0 +1,10 @@
+version: 0.1
+default:
+  build:
+    parameters:
+      cached: 'true'
+      parallel: 'true'
+  deploy:
+    parameters:
+      capabilities: CAPABILITY_IAM
+      image_repositories: []
