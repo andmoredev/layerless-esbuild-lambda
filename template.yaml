@@ -3,6 +3,18 @@ Description: Layerless ESBuild Example
 Transform:
   - AWS::Serverless-2016-10-31
 
+Metadata: &metadata-build-props
+  Format: esm
+  Minify: false
+  OutExtension:
+    - .js=.mjs
+  Target: es2020
+  Sourcemap: false
+  EntryPoints:
+    - index.mjs
+  Banner:
+    - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
+
 Globals:
   Function:
     Timeout: 10
@@ -43,18 +55,27 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
-        Format: esm
-        Minify: false
-        OutExtension:
-          - .js=.mjs
-        Target: es2020
-        Sourcemap: false
-        EntryPoints:
-          - index.mjs
-        Banner:
-          - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
+        <<: *metadata-build-props
+
+  EchoFunction2:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/echo
+      Events:
+        EchoEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref API
+            Path: /echo2
+            Method: POST
+      Policies:
+        - AWSLambdaBasicExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        <<: *metadata-build-props
         External:
-          - '@aws-sdk/client-secrets-manager'
+          - '@aws-sdk/*'
 
 Outputs:
   ApiURL:
