@@ -62,7 +62,7 @@ jobs:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: us-east-1
           role-to-assume: ${{ secrets.PIPELINE_EXECUTION_ROLE }}
           role-session-name: cleanup-stack
           role-duration-seconds: 3600
@@ -72,5 +72,5 @@ jobs:
         run: |
           sam delete \
           --stack-name ${{ needs.get-stack-name.outputs.STACK_NAME }} \
-          --region ${{ vars.AWS_REGION }} \
+          --region us-east-1 \
           --no-prompts
