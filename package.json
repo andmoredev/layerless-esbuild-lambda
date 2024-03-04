@@ -14,7 +14,7 @@
     "@aws-lambda-powertools/parameters": "^1.18.1",
     "@aws-lambda-powertools/tracer": "^1.18.1",
     "@aws-sdk/client-secrets-manager": "^3.525.0",
-    "@middy/core": "^5.2.4"
+    "@middy/core": "^5.2.6"
   },
   "devDependencies": {
     "c8": "^9.1.0",
