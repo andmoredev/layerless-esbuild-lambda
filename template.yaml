@@ -19,11 +19,11 @@ Globals:
 Parameters:
   CognitoUserPoolId:
     Type: 'AWS::SSM::Parameter::Value<String>'
-    Default: 'andmoredev-auth/CognitoUserPoolId'
+    Default: '/andmoredev-auth/CognitoUserPoolId'
 
   CognitoUserPoolArn:
     Type: 'AWS::SSM::Parameter::Value<String>'
-    Default: 'andmoredev-auth/CognitoUserPoolArn'
+    Default: '/andmoredev-auth/CognitoUserPoolArn'
 
 Resources:
   PostmanResourceServer:
