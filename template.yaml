@@ -30,11 +30,11 @@ Resources:
     Type: AWS::Cognito::UserPoolResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPoolId
-      Identifier: test
+      Identifier: automation
       Name: Automation
       Scopes:
-        - ScopeName: postman
-          ScopeDescription: Scope used to test endpoints with postman
+        - ScopeName: portman
+          ScopeDescription: Scope used to test endpoints with portman
 
   CognitoTestAutomationClient:
     Type: AWS::Cognito::UserPoolClient
@@ -44,7 +44,7 @@ Resources:
       AllowedOAuthFlows:
         - client_credentials
       AllowedOAuthScopes:
-        - test/postman
+        - automation/portman
       AllowedOAuthFlowsUserPoolClient: true
 
   API:
