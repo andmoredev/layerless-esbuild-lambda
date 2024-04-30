@@ -16,11 +16,49 @@ Globals:
         POWERTOOLS_SERVICE_NAME: layerless-esbuild-lambda-api
         POWERTOOLS_METRICS_NAMESPACE: layerless-esbuild-lambda
 
+Parameters:
+  CognitoUserPoolId:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: 'andmoredev-auth/CognitoUserPoolId'
+
+  CognitoUserPoolArn:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: 'andmoredev-auth/CognitoUserPoolArn'
+
 Resources:
+  PostmanResourceServer:
+    Type: AWS::Cognito::UserPoolResourceServer
+    Properties:
+      UserPoolId: !Ref CognitoUserPoolId
+      Identifier: test
+      Name: Automation
+      Scopes:
+        - ScopeName: postman
+          ScopeDescription: Scope used to test endpoints with postman
+
+  CognitoTestAutomationClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref CognitoUserPoolId
+      GenerateSecret: true
+      AllowedOAuthFlows:
+        - client_credentials
+      AllowedOAuthScopes:
+        - test/postman
+      AllowedOAuthFlowsUserPoolClient: true
+
   API:
     Type: AWS::Serverless::Api
     Properties:
       StageName: api
+      Auth:
+        DefaultAuthorizer: ClientCognitoAuthorizer
+        Authorizers:
+          ClientCognitoAuthorizer:
+            UserPoolArn: !Ref CognitoUserPoolArn
+            AuthorizationScopes:
+              - test/postman
+
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
