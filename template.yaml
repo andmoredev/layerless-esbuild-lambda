@@ -38,6 +38,8 @@ Resources:
 
   CognitoTestAutomationClient:
     Type: AWS::Cognito::UserPoolClient
+    DependsOn:
+      - PostmanResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPoolId
       GenerateSecret: true
