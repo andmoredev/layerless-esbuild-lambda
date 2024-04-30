@@ -16,36 +16,36 @@ Globals:
         POWERTOOLS_SERVICE_NAME: layerless-esbuild-lambda-api
         POWERTOOLS_METRICS_NAMESPACE: layerless-esbuild-lambda
 
-Parameters:
-  CognitoUserPoolId:
-    Type: 'AWS::SSM::Parameter::Value<String>'
-    Default: '/andmoredev-auth/CognitoUserPoolId'
+# Parameters:
+  # CognitoUserPoolId:
+  #   Type: 'AWS::SSM::Parameter::Value<String>'
+  #   Default: '/andmoredev-auth/CognitoUserPoolId'
 
-  CognitoUserPoolArn:
-    Type: 'AWS::SSM::Parameter::Value<String>'
-    Default: '/andmoredev-auth/CognitoUserPoolArn'
+  # CognitoUserPoolArn:
+  #   Type: 'AWS::SSM::Parameter::Value<String>'
+  #   Default: '/andmoredev-auth/CognitoUserPoolArn'
 
 Resources:
-  PostmanResourceServer:
-    Type: AWS::Cognito::UserPoolResourceServer
-    Properties:
-      UserPoolId: !Ref CognitoUserPoolId
-      Identifier: automation
-      Name: Automation
-      Scopes:
-        - ScopeName: portman
-          ScopeDescription: Scope used to test endpoints with portman
+  # PostmanResourceServer:
+  #   Type: AWS::Cognito::UserPoolResourceServer
+  #   Properties:
+  #     UserPoolId: !Ref CognitoUserPoolId
+  #     Identifier: automation
+  #     Name: Automation
+  #     Scopes:
+  #       - ScopeName: portman
+  #         ScopeDescription: Scope used to test endpoints with portman
 
-  CognitoTestAutomationClient:
-    Type: AWS::Cognito::UserPoolClient
-    Properties:
-      UserPoolId: !Ref CognitoUserPoolId
-      GenerateSecret: true
-      AllowedOAuthFlows:
-        - client_credentials
-      AllowedOAuthScopes:
-        - automation/portman
-      AllowedOAuthFlowsUserPoolClient: true
+  # CognitoTestAutomationClient:
+  #   Type: AWS::Cognito::UserPoolClient
+  #   Properties:
+  #     UserPoolId: !Ref CognitoUserPoolId
+  #     GenerateSecret: true
+  #     AllowedOAuthFlows:
+  #       - client_credentials
+  #     AllowedOAuthScopes:
+  #       - automation/portman
+  #     AllowedOAuthFlowsUserPoolClient: true
 
   API:
     Type: AWS::Serverless::Api
