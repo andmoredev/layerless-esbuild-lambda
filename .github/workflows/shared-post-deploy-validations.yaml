@@ -3,6 +3,14 @@ name: Post-deployment Validations
 on:
   workflow_call:
     inputs:
+      ENVIRONMENT:
+        required: true
+        type: string
+
+      TOKEN_URL:
+        required: true
+        type: string
+
       BASE_URL:
         type: string
         required: true
@@ -16,4 +24,9 @@ jobs:
       - name: Test API
         run: |
           npm ci
+
+          TOKEN_RESPONSE=$(curl --location '${{ inputs.TOKEN_URL }}' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=${{ secrets.TEST_CLIENT_ID }}' --data-urlencode 'client_secret=${{ secrets.TEST_CLIENT_SECRET }}' --data-urlencode 'scope=automation/portman' | jq -r '.access_token')
+          echo "PORTMAN_ACCESS_TOKEN=$TOKEN_RESPONSE" > ./portman/.env-portman
+          cat ./portman/.env-portman
+
           npx @apideck/portman --cliOptionsFile portman/portman-cli.json --baseUrl ${{ inputs.BASE_URL }}

@@ -34,7 +34,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: ${{ vars.PIPELINE_EXECUTION_ROLE }}
+          role-to-assume: ${{ secrets.PIPELINE_EXECUTION_ROLE }}
           role-session-name: sam-deploy
           role-duration-seconds: 3600
           role-skip-session-tagging: true
@@ -50,9 +50,9 @@ jobs:
 
           sam deploy \
           --stack-name ${{inputs.STACK_NAME }} \
-          --s3-bucket ${{ vars.ARTIFACTS_BUCKET_NAME }} \
+          --s3-bucket ${{ secrets.ARTIFACTS_BUCKET_NAME }} \
           --no-fail-on-empty-changeset \
-          --role-arn ${{ vars.CLOUDFORMATION_EXECUTION_ROLE }}
+          --role-arn ${{ secrets.CLOUDFORMATION_EXECUTION_ROLE }}
 
       - id: getStackOutputs
         name: Get Stack Outputs
