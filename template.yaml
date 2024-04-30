@@ -59,7 +59,7 @@ Resources:
           ClientCognitoAuthorizer:
             UserPoolArn: !Ref CognitoUserPoolArn
             AuthorizationScopes:
-              - test/postman
+              - automation/portman
 
       DefinitionBody:
         Fn::Transform:
