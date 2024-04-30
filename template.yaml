@@ -51,13 +51,13 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: api
-      Auth:
-        DefaultAuthorizer: ClientCognitoAuthorizer
-        Authorizers:
-          ClientCognitoAuthorizer:
-            UserPoolArn: !Ref CognitoUserPoolArn
-            AuthorizationScopes:
-              - test/postman
+      # Auth:
+      #   DefaultAuthorizer: ClientCognitoAuthorizer
+      #   Authorizers:
+      #     ClientCognitoAuthorizer:
+      #       UserPoolArn: !Ref CognitoUserPoolArn
+      #       AuthorizationScopes:
+      #         - test/postman
 
       DefinitionBody:
         Fn::Transform:
