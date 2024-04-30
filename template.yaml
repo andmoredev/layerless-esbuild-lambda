@@ -100,3 +100,7 @@ Outputs:
   ApiURL:
     Description: API URL
     Value: !Sub https://${API}.execute-api.${AWS::Region}.amazonaws.com/api
+
+  CognitoTestAutomationClientId:
+    Description: Cognito Test Automation Client
+    Value: !Ref CognitoTestAutomationClient

@@ -43,7 +43,7 @@ jobs:
         run: |
           npm install -g esbuild
           npm ci
-          
+
           sam --info
 
           sam build
@@ -57,9 +57,14 @@ jobs:
       - id: getStackOutputs
         name: Get Stack Outputs
         run: |
-          url=$(aws cloudformation describe-stacks --stack-name ${{inputs.STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='ApiURL'].OutputValue" --output text)
+          stackOutputJson=$(aws cloudformation describe-stacks --output json --stack-name ${{inputs.STACK_NAME }} --query "Stacks[0].Outputs")
+          url=$(echo $stackOutputJson | jq -r '.[] | select(.OutputKey=="ApiURL") | .OutputValue')
+          clientId=$(echo $stackOutputJson | jq -r '.[] | select(.OutputKey=="CognitoTestAutomationClientId") | .OutputValue')
 
           echo "# API" >> $GITHUB_STEP_SUMMARY
           echo "* API - $url" >> $GITHUB_STEP_SUMMARY
 
           echo "API_BASE_URL=$url" >> $GITHUB_OUTPUT
+
+          echo "# Cognito" >> $GITHUB_STEP_SUMMARY
+          echo "* Client Id - $clientId" >> $GITHUB_STEP_SUMMARY
