@@ -26,28 +26,27 @@ Parameters:
     Default: '/andmoredev-auth/CognitoUserPoolArn'
 
 Resources:
-  PostmanResourceServer:
+  LayerlessESBuildResourceServer:
     Type: AWS::Cognito::UserPoolResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPoolId
-      Identifier: automation
-      Name: Automation
+      Identifier: layerless-esbuild
+      Name: Echo Scopes
       Scopes:
-        - ScopeName: portman
-          ScopeDescription: Scope used to test endpoints with portman
+        - ScopeName: echo
+          ScopeDescription: Trigger an echo
 
   CognitoTestAutomationClient:
     Type: AWS::Cognito::UserPoolClient
     DependsOn:
-      - PostmanResourceServer
+      - LayerlessESBuildResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPoolId
       GenerateSecret: true
       AllowedOAuthFlows:
         - client_credentials
       AllowedOAuthScopes:
-        - automation/portman
-      AllowedOAuthFlowsUserPoolClient: true
+        - layerless-esbuild/echo
 
   API:
     Type: AWS::Serverless::Api
@@ -59,7 +58,7 @@ Resources:
           ClientCognitoAuthorizer:
             UserPoolArn: !Ref CognitoUserPoolArn
             AuthorizationScopes:
-              - automation/portman
+              - layerless-esbuild/echo
 
       DefinitionBody:
         Fn::Transform:
