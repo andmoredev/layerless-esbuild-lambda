@@ -47,6 +47,7 @@ Resources:
         - client_credentials
       AllowedOAuthScopes:
         - layerless-esbuild/echo
+      AllowedOAuthFlowsUserPoolClient: true
 
   API:
     Type: AWS::Serverless::Api
@@ -99,11 +100,3 @@ Outputs:
   ApiURL:
     Description: API URL
     Value: !Sub https://${API}.execute-api.${AWS::Region}.amazonaws.com/api
-
-  CognitoUserPoolId:
-    Description: Cognito User Pool ID
-    Value: !Ref CognitoUserPoolId
-
-  CognitoTestAutomationClientId:
-    Description: Cognito Test Automation Client
-    Value: !Ref CognitoTestAutomationClient
