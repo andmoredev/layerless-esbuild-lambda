@@ -3,13 +3,9 @@ name: Post-deployment Validations
 on:
   workflow_call:
     inputs:
-      ENVIRONMENT:
-        required: true
-        type: string
-
       TOKEN_URL:
-        required: true
         type: string
+        required: true
 
       BASE_URL:
         type: string
