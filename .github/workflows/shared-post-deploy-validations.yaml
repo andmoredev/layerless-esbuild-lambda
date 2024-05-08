@@ -18,11 +18,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test API
+        env:
+          TOKEN_URL: ${{ secrets.COGNITOPOOL_URL }}/oauth2/token
+          CLIENT_ID: ${{ secrets.TEST_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.TEST_CLIENT_SECRET }}
+          SCOPE: layerless-esbuild/echo
         run: |
           npm ci
 
-          TOKEN_RESPONSE=$(curl --location '${{ secrets.COGNITOPOOL_URL }}/oauth2/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=${{ secrets.TEST_CLIENT_ID }}' --data-urlencode 'client_secret=${{ secrets.TEST_CLIENT_SECRET }}' --data-urlencode 'scope=layerless-esbuild/echo' | jq -r '.access_token')
+          TOKEN_RESPONSE=$(curl --location '$TOKEN_URL' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=$CLIENT_ID' --data-urlencode 'client_secret=$CLIENT_SECRET' --data-urlencode 'scope=$SCOPE' | jq -r '.access_token')
           echo "PORTMAN_ACCESS_TOKEN=$TOKEN_RESPONSE" > ./portman/.env-portman
-          cat ./portman/.env-portman
 
           npx @apideck/portman --cliOptionsFile portman/portman-cli.json --baseUrl ${{ inputs.BASE_URL }}
