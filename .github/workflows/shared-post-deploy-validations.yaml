@@ -21,7 +21,7 @@ jobs:
         run: |
           npm ci
 
-          TOKEN_RESPONSE=$(curl --location '${{ secrets.COGNITOPOOL_URL }}/oauth2/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=${{ secrets.TEST_CLIENT_ID }}' --data-urlencode 'client_secret=${{ secrets.TEST_CLIENT_SECRET }}' --data-urlencode 'scope=layerless-esbuild/echo' | jq -r '.access_token')
+          TOKEN_RESPONSE=$(curl --location '${{ secrets.COGNITOPOOL_URL }}/oauth2/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=${{ secrets.TEST_CLIENT_ID }}' --data-urlencode 'client_secret=${{ secrets.TEST_CLIENT_SECRET }}' --data-urlencode 'scope=${{ secrets.SCOPES }}' | jq -r '.access_token')
           echo "PORTMAN_ACCESS_TOKEN=$TOKEN_RESPONSE" > ./portman/.env-portman
 
           npx @apideck/portman --cliOptionsFile portman/portman-cli.json --baseUrl ${{ inputs.BASE_URL }}
