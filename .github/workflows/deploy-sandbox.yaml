@@ -58,6 +58,7 @@ jobs:
     needs: [deploy]
     uses: ./.github/workflows/shared-post-deploy-validations.yaml
     with:
+      ENVIRONMENT: sandbox
       BASE_URL: ${{ needs.deploy.outputs.API_BASE_URL }}
     secrets: inherit
 

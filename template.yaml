@@ -16,11 +16,51 @@ Globals:
         POWERTOOLS_SERVICE_NAME: layerless-esbuild-lambda-api
         POWERTOOLS_METRICS_NAMESPACE: layerless-esbuild-lambda
 
+Parameters:
+  CognitoUserPoolId:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/andmoredev-auth/CognitoUserPoolId'
+
+  CognitoUserPoolArn:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/andmoredev-auth/CognitoUserPoolArn'
+
 Resources:
+  LayerlessESBuildResourceServer:
+    Type: AWS::Cognito::UserPoolResourceServer
+    Properties:
+      UserPoolId: !Ref CognitoUserPoolId
+      Identifier: layerless-esbuild
+      Name: Echo Scopes
+      Scopes:
+        - ScopeName: echo
+          ScopeDescription: Trigger an echo
+
+  CognitoTestAutomationClient:
+    Type: AWS::Cognito::UserPoolClient
+    DependsOn:
+      - LayerlessESBuildResourceServer
+    Properties:
+      UserPoolId: !Ref CognitoUserPoolId
+      GenerateSecret: true
+      AllowedOAuthFlows:
+        - client_credentials
+      AllowedOAuthScopes:
+        - layerless-esbuild/echo
+      AllowedOAuthFlowsUserPoolClient: true
+
   API:
     Type: AWS::Serverless::Api
     Properties:
       StageName: api
+      Auth:
+        DefaultAuthorizer: ClientCognitoAuthorizer
+        Authorizers:
+          ClientCognitoAuthorizer:
+            UserPoolArn: !Ref CognitoUserPoolArn
+            AuthorizationScopes:
+              - layerless-esbuild/echo
+
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
