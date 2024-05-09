@@ -30,7 +30,7 @@ Resources:
     Type: AWS::Cognito::UserPoolResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPoolId
-      Identifier: layerless-esbuild
+      Identifier: !Sub layerless-esbuild
       Name: Echo Scopes
       Scopes:
         - ScopeName: echo
