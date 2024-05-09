@@ -50,7 +50,7 @@ jobs:
     with:
       ENVIRONMENT: sandbox
       AWS_REGION: us-east-1
-      STACK_NAME: ${{ needs.get-stack-name.outputs.STACK_NAME }}
+      STACK_NAME: layerless-esbuild-lambda
     secrets: inherit
 
   postdeploy-validations:
