@@ -4,7 +4,7 @@
   "scripts": {
     "test": "mocha \"./**/tests/*.mjs\"",
     "coverage": "c8 npm test",
-    "lint": "eslint {**,.}/*.js --no-error-on-unmatched-pattern",
+    "lint": "eslint {**,.}/*.mjs --no-error-on-unmatched-pattern",
     "lint-api": "spectral lint openapi.yaml",
     "portman": "portman --cliOptionsFile portman/portman-cli.json"
   },
@@ -17,9 +17,10 @@
     "@middy/core": "^5.2.6"
   },
   "devDependencies": {
+    "@eslint/js": "^9.2.0",
     "c8": "^9.1.0",
     "chai": "^5.1.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.2.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^10.3.0"
   }
