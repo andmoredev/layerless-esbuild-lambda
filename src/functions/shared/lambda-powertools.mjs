@@ -1,6 +1,9 @@
-import { Logger, injectLambdaContext } from '@aws-lambda-powertools/logger';
-import { Metrics, logMetrics } from '@aws-lambda-powertools/metrics';
-import { Tracer, captureLambdaHandler } from '@aws-lambda-powertools/tracer';
+import { Logger } from '@aws-lambda-powertools/logger';
+import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware';
+import { Metrics } from '@aws-lambda-powertools/metrics';
+import { logMetrics } from '@aws-lambda-powertools/metrics/middleware';
+import { Tracer } from '@aws-lambda-powertools/tracer';
+import { captureLambdaHandler } from '@aws-lambda-powertools/tracer/middleware';
 import middy from '@middy/core';
 
 export const logger = new Logger({
