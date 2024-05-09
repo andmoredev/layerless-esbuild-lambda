@@ -30,7 +30,7 @@ Resources:
     Type: AWS::Cognito::UserPoolResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPoolId
-      Identifier: layerless-esbuild
+      Identifier: !Sub layerless-esbuild${AWS::StackName}
       Name: Echo Scopes
       Scopes:
         - ScopeName: echo
@@ -46,7 +46,7 @@ Resources:
       AllowedOAuthFlows:
         - client_credentials
       AllowedOAuthScopes:
-        - layerless-esbuild/echo
+        - !Sub layerless-esbuild${AWS::StackName}/echo
       AllowedOAuthFlowsUserPoolClient: true
 
   API:
