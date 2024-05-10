@@ -5,7 +5,6 @@ default:
       cached: 'true'
       parallel: 'true'
 
-sandbox:
   deploy:
     parameters:
       capabilities: CAPABILITY_IAM
