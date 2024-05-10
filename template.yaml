@@ -17,6 +17,9 @@ Globals:
         POWERTOOLS_METRICS_NAMESPACE: layerless-esbuild-lambda
 
 Parameters:
+  CallbackURLs:
+    Type: CommaDelimitedList
+
   CognitoUserPoolId:
     Type: 'AWS::SSM::Parameter::Value<String>'
     Default: '/andmoredev-auth/CognitoUserPoolId'
@@ -26,28 +29,23 @@ Parameters:
     Default: '/andmoredev-auth/CognitoUserPoolArn'
 
 Resources:
-  LayerlessESBuildResourceServer:
-    Type: AWS::Cognito::UserPoolResourceServer
-    Properties:
-      UserPoolId: !Ref CognitoUserPoolId
-      Identifier: !Sub layerless-esbuild
-      Name: Echo Scopes
-      Scopes:
-        - ScopeName: echo
-          ScopeDescription: Trigger an echo
-
-  CognitoTestAutomationClient:
+  CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
-    DependsOn:
-      - LayerlessESBuildResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPoolId
-      GenerateSecret: true
       AllowedOAuthFlows:
-        - client_credentials
+        - code
       AllowedOAuthScopes:
-        - layerless-esbuild/echo
+        - email
+        - openid
+        - profile
+      CallbackURLs: !Ref CallbackURLs
       AllowedOAuthFlowsUserPoolClient: true
+      SupportedIdentityProviders:
+        - COGNITO
+      ExplicitAuthFlows:
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
 
   API:
     Type: AWS::Serverless::Api
@@ -59,8 +57,9 @@ Resources:
           ClientCognitoAuthorizer:
             UserPoolArn: !Ref CognitoUserPoolArn
             AuthorizationScopes:
-              - layerless-esbuild/echo
-
+              - email
+              - openid
+              - profile
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
