@@ -13,8 +13,8 @@
     "@aws-lambda-powertools/metrics": "^2.1.0",
     "@aws-lambda-powertools/parameters": "^2.1.0",
     "@aws-lambda-powertools/tracer": "^2.1.0",
-    "@aws-sdk/client-secrets-manager": "^3.572.0",
-    "@middy/core": "^5.3.3"
+    "@aws-sdk/client-secrets-manager": "^3.574.0",
+    "@middy/core": "^5.3.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.2.0",
