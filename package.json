@@ -9,18 +9,18 @@
     "portman": "portman --cliOptionsFile portman/portman-cli.json"
   },
   "dependencies": {
-    "@aws-lambda-powertools/logger": "^2.1.0",
-    "@aws-lambda-powertools/metrics": "^2.1.0",
-    "@aws-lambda-powertools/parameters": "^2.1.0",
-    "@aws-lambda-powertools/tracer": "^2.1.0",
-    "@aws-sdk/client-secrets-manager": "^3.572.0",
-    "@middy/core": "^5.3.3"
+    "@aws-lambda-powertools/logger": "^2.2.0",
+    "@aws-lambda-powertools/metrics": "^2.2.0",
+    "@aws-lambda-powertools/parameters": "^2.2.0",
+    "@aws-lambda-powertools/tracer": "^2.2.0",
+    "@aws-sdk/client-secrets-manager": "^3.599.0",
+    "@middy/core": "^5.4.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.2.0",
-    "c8": "^9.1.0",
+    "@eslint/js": "^9.5.0",
+    "c8": "^10.1.2",
     "chai": "^5.1.1",
-    "eslint": "^9.2.0",
+    "eslint": "^9.5.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^10.4.0"
   }
