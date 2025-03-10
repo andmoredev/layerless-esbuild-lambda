@@ -109,7 +109,7 @@
     "rawReplacements": [],
     "securityOverwrites": {
       "bearer": {
-        "token": "{{accessToken}}"
+        "token": "{{token}}"
       }
     }
   }
