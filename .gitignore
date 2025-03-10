@@ -1,3 +1,7 @@
 .aws-sam
 node_modules
 coverage/
+collection.postman.json
+tmp/
+portman/.DS_Store
+portman/.env-portman
