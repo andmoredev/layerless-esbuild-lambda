@@ -1,0 +1,7 @@
+
+{
+    "reporter": ["lcovonly", "text"],
+    "exclude": [
+      "**/*.tests.mjs"
+    ]
+}
