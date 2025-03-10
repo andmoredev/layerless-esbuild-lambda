@@ -9,6 +9,10 @@ on:
       BASE_URL:
         type: string
         required: true
+      COGNITO_USER_POOL_ID:
+        type: string
+        required: true
+  
 
 jobs:
   test-api:
@@ -17,11 +21,35 @@ jobs:
     environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.PIPELINE_EXECUTION_ROLE }}
+          role-session-name: create-test-user
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
+
+      - name: Create Test User
+        run: |
+          username=$(uuidgen)@andmore.dev
+          password=$(uuidgen)G1%
+          echo "USERNAME=$username" >> $GITHUB_ENV;
+          echo "PASSWORD=$password" >> $GITHUB_ENV;
+          aws cognito-idp admin-create-user --user-pool-id ${{ inputs.COGNITO_USER_POOL_ID }} --username $username --message-action SUPPRESS
+          aws cognito-idp admin-set-user-password --user-pool-id ${{ inputs.COGNITO_USER_POOL_ID }} --username $username  --password $password --permanent
+
       - name: Test API
+        env:
+          COGNITO_URL: ${{ secrets.COGNITO_URL }}
+          CLIENT_ID: ${{ secrets.COGNITO_CLIENT_ID }}
         run: |
           npm ci
 
-          TOKEN_RESPONSE=$(curl --location '${{ secrets.COGNITOPOOL_URL }}/oauth2/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=${{ secrets.TEST_CLIENT_ID }}' --data-urlencode 'client_secret=${{ secrets.TEST_CLIENT_SECRET }}' --data-urlencode 'scope=${{ secrets.SCOPES }}' | jq -r '.access_token')
-          echo "PORTMAN_ACCESS_TOKEN=$TOKEN_RESPONSE" > ./portman/.env-portman
-
+          node ./portman/get-auth-token/user-password-auth.mjs
           npx @apideck/portman --cliOptionsFile portman/portman-cli.json --baseUrl ${{ inputs.BASE_URL }}
+
+      - name: Delete Test User
+        run: |
+          aws cognito-idp admin-delete-user --user-pool-id ${{ inputs.COGNITO_USER_POOL_ID }} --username $USERNAME
