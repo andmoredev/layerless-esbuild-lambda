@@ -20,6 +20,7 @@ jobs:
   predeploy-validations:
     name: Pre-deploy validations
     uses: ./.github/workflows/shared-pre-deploy-validations.yaml
+    secrets: inherit
 
   get-stack-name:
     name: Get Stack Name
