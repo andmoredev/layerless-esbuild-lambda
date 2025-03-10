@@ -26,28 +26,15 @@ Parameters:
     Default: '/andmoredev-auth/CognitoUserPoolArn'
 
 Resources:
-  LayerlessESBuildResourceServer:
-    Type: AWS::Cognito::UserPoolResourceServer
-    Properties:
-      UserPoolId: !Ref CognitoUserPoolId
-      Identifier: !Sub layerless-esbuild
-      Name: Echo Scopes
-      Scopes:
-        - ScopeName: echo
-          ScopeDescription: Trigger an echo
-
-  CognitoTestAutomationClient:
+  CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
-    DependsOn:
-      - LayerlessESBuildResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPoolId
-      GenerateSecret: true
-      AllowedOAuthFlows:
-        - client_credentials
-      AllowedOAuthScopes:
-        - layerless-esbuild/echo
-      AllowedOAuthFlowsUserPoolClient: true
+      SupportedIdentityProviders:
+        - COGNITO
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
 
   API:
     Type: AWS::Serverless::Api
@@ -58,9 +45,6 @@ Resources:
         Authorizers:
           ClientCognitoAuthorizer:
             UserPoolArn: !Ref CognitoUserPoolArn
-            AuthorizationScopes:
-              - layerless-esbuild/echo
-
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
