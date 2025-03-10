@@ -62,7 +62,7 @@ jobs:
       ENVIRONMENT: sandbox
       BASE_URL: ${{ needs.deploy.outputs.API_BASE_URL }}
       COGNITO_USER_POOL_ID: ${{ needs.deploy.outputs.COGNITO_USER_POOL_ID }}
-      COGNITO_USER_POOL_URL: ${{ needs.deploy.outputs.COGNITO_USER_POOL_URL }}
+      COGNITO_USER_POOL_URL: https://cognito-idp.us-east-1.amazonaws.com
       COGNITO_CLIENT_ID: ${{ needs.deploy.outputs.COGNITO_CLIENT_ID }}
     secrets: inherit
 
