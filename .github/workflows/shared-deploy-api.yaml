@@ -27,6 +27,7 @@ jobs:
     environment: ${{ inputs.ENVIRONMENT }}
     outputs:
       API_BASE_URL: ${{ steps.getStackOutputs.outputs.API_BASE_URL }}
+      COGNITO_USER_POOL_ID: ${{ steps.getStackOutputs.COGNITO_USER_POOL_ID }}
     steps:
       - uses: actions/checkout@v4
 
