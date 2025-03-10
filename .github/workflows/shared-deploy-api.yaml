@@ -17,7 +17,10 @@ on:
         value: ${{ jobs.deploy.outputs.API_BASE_URL }}
       COGNITO_USER_POOL_ID:
         value: ${{ jobs.deploy.outputs.COGNITO_USER_POOL_ID }}
-
+      COGNITO_USER_POOL_URL:
+        value: ${{ jobs.deploy.outputs.COGNITO_USER_POOL_URL }}
+      COGNITO_CLIENT_ID:
+        value: ${{ jobs.deploy.outputs.COGNITO_CLIENT_ID }}
 
 permissions:
   id-token: write
@@ -31,6 +34,8 @@ jobs:
     outputs:
       API_BASE_URL: ${{ steps.getStackOutputs.outputs.API_BASE_URL }}
       COGNITO_USER_POOL_ID: ${{ steps.getStackOutputs.outputs.COGNITO_USER_POOL_ID }}
+      COGNITO_USER_POOL_URL: ${{ steps.getStackOutputs.outputs.COGNITO_USER_POOL_URL }}
+      COGNITO_CLIENT_ID: ${{ steps.getStackOutputs.outputs.COGNITO_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -64,10 +69,18 @@ jobs:
           stackOutputJson=$(aws cloudformation describe-stacks --output json --stack-name ${{inputs.STACK_NAME }} --query "Stacks[0].Outputs")
           url=$(echo $stackOutputJson | jq -r '.[] | select(.OutputKey=="ApiURL") | .OutputValue')
           cognitoUserPoolId=$(echo $stackOutputJson | jq -r '.[] | select(.OutputKey=="CognitoUserPoolId") | .OutputValue')
+          cognitoUserPoolUrl=$(echo $stackOutputJson | jq -r '.[] | select(.OutputKey=="CognitoUserPoolUrl") | .OutputValue')
+          cognitoClientId=$(echo $stackOutputJson | jq -r '.[] | select(.OutputKey=="CognitoClientId") | .OutputValue')
+
 
           echo "# API" >> $GITHUB_STEP_SUMMARY
           echo "* API - $url" >> $GITHUB_STEP_SUMMARY
           echo "* Cognito User Pool Client ID - $cognitoUserPoolId" >> $GITHUB_STEP_SUMMARY
+          echo "* Cognito User Pool Url - $cognitoUserPoolUrl" >> $GITHUB_STEP_SUMMARY
+          echo "* Cognito Client Id - $cognitoClientId" >> $GITHUB_STEP_SUMMARY
+
 
           echo "API_BASE_URL=$url" >> $GITHUB_OUTPUT
           echo "COGNITO_USER_POOL_ID=$cognitoUserPoolId" >> $GITHUB_OUTPUT
+          echo "COGNITO_USER_POOL_URL=$cognitoUserPoolUrl" >> $GITHUB_OUTPUT
+          echo "COGNITO_CLIENT_ID=$cognitoClientId" >> $GITHUB_OUTPUT

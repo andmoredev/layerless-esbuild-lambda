@@ -12,7 +12,12 @@ on:
       COGNITO_USER_POOL_ID:
         type: string
         required: true
-  
+      COGNITO_USER_POOL_URL:
+        type: string
+        required: true
+      COGNITO_CLIENT_ID:
+        type: string
+        required: true
 
 jobs:
   test-api:
@@ -42,8 +47,8 @@ jobs:
 
       - name: Test API
         env:
-          COGNITO_URL: ${{ secrets.COGNITO_URL }}
-          CLIENT_ID: ${{ secrets.COGNITO_CLIENT_ID }}
+          COGNITO_URL: ${{ inputs.COGNITO_USER_POOL_URL }}
+          CLIENT_ID: ${{ inputs.COGNITO_CLIENT_ID }}
         run: |
           npm ci
 

@@ -25,6 +25,10 @@ Parameters:
     Type: 'AWS::SSM::Parameter::Value<String>'
     Default: '/andmoredev-auth/CognitoUserPoolArn'
 
+  CognitoUserPoolUrl:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/andmoredev-auth/CognitoUserPoolUrl'
+
 Resources:
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
@@ -88,3 +92,11 @@ Outputs:
   CognitoUserPoolId:
     Description: Cognito User Pool Id
     Value: !Ref CognitoUserPoolId
+
+  CognitoUserPoolUrl:
+    Description: Cognito User Pool Url
+    Value: !Ref CognitoUserPoolUrl
+
+  CognitoClientId:
+    Description: Cognito Client Id
+    Value: !Ref CognitoUserPoolClient
