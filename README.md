@@ -1,5 +1,5 @@
 Repository used as an example for the [Drop the layers, bundle up with ESBuild instead](https://andmore.dev/blog/layerless-esbuild-lambda) article.
-**Update** - This includes authentication now. This is all explained in [Secure API Gateway with Amazon Cognito using SAM](https://andmore.dev/blog/api-cognito).
+**Update** - This includes authentication now. This is all explained in [Secure API Gateway with Amazon Cognito using SAM](https://andmore.dev/blog/api-cognito) and [Using Amazon Cognito with the User-Password Flow](https://www.andmore.dev/blog/api-cognito-user-password).
 
 # Deploy using the SAM CLI
 ## Clone/fork the repository
