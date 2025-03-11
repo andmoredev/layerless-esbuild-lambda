@@ -3,6 +3,10 @@ import { getResponse } from '../shared/apigateway.mjs';
 
 export const handler = initializePowertools(async (event) => {
   try {
+    console.info('Log 1');
+    console.warn('Log 2');
+    console.error('Log 3');
+    console.info('Log 4');
     const input = JSON.parse(event.body);
 
     return getResponse(200, input);

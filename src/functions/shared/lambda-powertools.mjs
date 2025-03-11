@@ -7,6 +7,10 @@ import { captureLambdaHandler } from '@aws-lambda-powertools/tracer/middleware';
 import middy from '@middy/core';
 
 export const logger = new Logger({
+  logBufferOptions: {
+    maxBytes: 20480,
+    flushOnErrorLog: true
+  },
   persistentLogAttributes: {
     aws_account_id: process.env.AWS_ACCOUNT_ID || 'N/A',
     aws_region: process.env.AWS_REGION || 'N/A'
