@@ -8,8 +8,7 @@ import middy from '@middy/core';
 
 export const logger = new Logger({
   logBufferOptions: {
-    maxBytes: 20480,
-    flushOnErrorLog: true
+    enabled: true
   },
   persistentLogAttributes: {
     aws_account_id: process.env.AWS_ACCOUNT_ID || 'N/A',
@@ -28,7 +27,8 @@ export const tracer = new Tracer();
 
 const loggerOptions = {
   clearState: true,
-  logEvent: true
+  logEvent: true,
+  flushBufferOnUncaughtError: true
 };
 
 const metricsOptions = {
