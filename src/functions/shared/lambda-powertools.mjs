@@ -27,8 +27,8 @@ export const tracer = new Tracer();
 
 const loggerOptions = {
   clearState: true,
-  logEvent: true,
-  flushBufferOnUncaughtError: true
+  logEvent: true
+  // flushBufferOnUncaughtError: true
 };
 
 const metricsOptions = {
