@@ -13,16 +13,16 @@
     "@aws-lambda-powertools/metrics": "^2.19.1",
     "@aws-lambda-powertools/parameters": "^2.19.1",
     "@aws-lambda-powertools/tracer": "^2.19.1",
-    "@aws-sdk/client-secrets-manager": "^3.810.0",
+    "@aws-sdk/client-secrets-manager": "^3.812.0",
     "@middy/core": "^6.3.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.26.0",
+    "@eslint/js": "^9.27.0",
     "axios": "^1.9.0",
     "c8": "^10.1.3",
     "chai": "^5.2.0",
-    "eslint": "^9.26.0",
+    "eslint": "^9.27.0",
     "eslint-config-google": "^0.14.0",
-    "mocha": "^11.2.2"
+    "mocha": "^11.3.0"
   }
 }
