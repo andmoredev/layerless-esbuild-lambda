@@ -60,7 +60,7 @@ jobs:
           fetch-depth: 1
 
       - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.PIPELINE_EXECUTION_ROLE }}
