@@ -8,7 +8,7 @@
   - Handle invalid operation types with descriptive error messages
   - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 4.1, 4.2, 4.3, 4.4, 5.1_
 
-- [ ]* 1.1 Write unit tests for calculator logic
+- [x] 1.1 Write unit tests for calculator logic
   - Create `tests/calculator.tests.mjs` file
   - Write tests for addition (multiple numbers, single number, empty array, negative numbers)
   - Write tests for subtraction (multiple numbers, single number, empty array)
@@ -29,7 +29,7 @@
   - Wrap handler with initializePowertools for observability
   - _Requirements: 5.2, 5.3, 5.4, 6.2, 6.4_
 
-- [ ]* 2.1 Write unit tests for Lambda handler
+- [x] 2.1 Write unit tests for Lambda handler
   - Create `tests/index.tests.mjs` file
   - Write test for successful addition operation
   - Write test for successful subtraction operation
