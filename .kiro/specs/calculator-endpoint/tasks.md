@@ -1,0 +1,81 @@
+# Implementation Plan
+
+- [x] 1. Create calculator function structure and core calculation logic
+  - Create directory `src/functions/calculator/`
+  - Implement `calculator.mjs` module with calculation functions (add, subtract, multiply, divide)
+  - Implement validation logic for division operation (exactly 2 numbers, no division by zero)
+  - Implement main `calculate` function that routes to appropriate operation
+  - Handle invalid operation types with descriptive error messages
+  - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 4.1, 4.2, 4.3, 4.4, 5.1_
+
+- [ ]* 1.1 Write unit tests for calculator logic
+  - Create `tests/calculator.tests.mjs` file
+  - Write tests for addition (multiple numbers, single number, empty array, negative numbers)
+  - Write tests for subtraction (multiple numbers, single number, empty array)
+  - Write tests for multiplication (multiple numbers, with zero, empty array)
+  - Write tests for division (valid 2 numbers, too many numbers, too few numbers, division by zero)
+  - Write tests for invalid operation type handling
+  - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 4.1, 4.2, 4.3, 4.4, 5.1_
+
+- [x] 2. Implement Lambda handler function
+  - Create `index.mjs` handler file in `src/functions/calculator/`
+  - Import shared utilities (initializePowertools, logger, getResponse)
+  - Import calculator module
+  - Parse event body to extract operation and numbers
+  - Call calculate function with parsed inputs
+  - Return success response (200) with operation, numbers, and result
+  - Handle validation errors and return 400 responses with appropriate messages
+  - Handle unexpected errors and return 500 responses
+  - Wrap handler with initializePowertools for observability
+  - _Requirements: 5.2, 5.3, 5.4, 6.2, 6.4_
+
+- [ ]* 2.1 Write unit tests for Lambda handler
+  - Create `tests/index.tests.mjs` file
+  - Write test for successful addition operation
+  - Write test for successful subtraction operation
+  - Write test for successful multiplication operation
+  - Write test for successful division operation
+  - Write test for invalid operation type (400 error)
+  - Write test for division with wrong number count (400 error)
+  - Write test for division by zero (400 error)
+  - Write test for malformed JSON input (500 error)
+  - Verify response structure includes statusCode, headers, and body
+  - Verify CORS headers are present in responses
+  - _Requirements: 5.1, 5.2, 5.3, 5.4, 6.2, 6.3_
+
+- [x] 3. Define OpenAPI specification for calculator endpoint
+  - Add `/calculations` path to `openapi.yaml`
+  - Define POST operation with operationId `createCalculation`
+  - Add operation to "Tool" tag
+  - Create `calculateRequest` schema in components/schemas with operation (enum) and numbers (array) properties
+  - Create `calculateResponse` schema in components/schemas with operation, numbers, and result properties
+  - Define request body using calculateRequest schema reference
+  - Define 200 response using calculateResponse schema with example
+  - Reference existing 400, 403, and 500 error responses
+  - Add request validator: "Validate body, query string parameters, and headers"
+  - Add x-amazon-apigateway-integration with Lambda function reference
+  - _Requirements: 5.2, 5.3, 5.4, 6.1, 6.2, 6.3_
+
+- [x] 4. Add Lambda function resource to SAM template
+  - Add `CalculatorFunction` resource to `template.yaml`
+  - Set CodeUri to `src/functions/calculator`
+  - Define API event for POST /calculations endpoint
+  - Reference API resource and specify path and method
+  - Add AWSLambdaBasicExecutionRole policy
+  - Configure ESBuild metadata (format: esm, target: es2020, entrypoint: index.mjs)
+  - Add banner for createRequire shim
+  - Externalize @aws-sdk/client-secrets-manager
+  - _Requirements: 6.1, 6.4_
+
+- [x] 5. Validate and test the implementation
+  - Run `npm run lint` to check code quality
+  - Run `npm run lint-api` to validate OpenAPI specification
+  - Run `npm test` to execute all unit tests
+  - Run `npm run coverage` to verify test coverage
+  - Build SAM application with `sam build`
+  - Deploy to sandbox environment
+  - Test endpoint manually with valid requests for all operations
+  - Test endpoint with invalid inputs to verify error handling
+  - Verify authentication is required (test without token)
+  - Verify CloudWatch logs show structured logging with Powertools
+  - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 4.1, 4.2, 4.3, 4.4, 5.1, 5.2, 5.3, 5.4, 6.1, 6.2, 6.3, 6.4_

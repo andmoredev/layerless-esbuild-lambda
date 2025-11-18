@@ -11,8 +11,8 @@ tags:
     description: Tool endpoints
 
 servers:
-  - url: https://example.com/api
-    description: Example URL
+  - url: https://api.placeholder.local/api
+    description: Placeholder URL (will be replaced with actual API Gateway URL after deployment)
 
 x-amazon-apigateway-request-validators:
   Validate body, query string parameters, and headers:
@@ -84,7 +84,133 @@ paths:
         httpMethod: POST
         type: aws_proxy
 
+  /calculations:
+    post:
+      summary: Perform mathematical calculation
+      operationId: createCalculation
+      description: |
+        Performs mathematical operations (addition, subtraction, multiplication, division) on an array of numbers.
+        Division requires exactly two numbers and does not allow division by zero.
+      tags:
+        - Tool
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/calculateRequest'
+            examples:
+              addition:
+                summary: Addition example
+                value:
+                  operation: addition
+                  numbers: [1, 2, 3, 4]
+              subtraction:
+                summary: Subtraction example
+                value:
+                  operation: subtraction
+                  numbers: [10, 3, 2]
+              multiplication:
+                summary: Multiplication example
+                value:
+                  operation: multiplication
+                  numbers: [2, 3, 4]
+              division:
+                summary: Division example
+                value:
+                  operation: division
+                  numbers: [10, 2]
+      responses:
+        '200':
+          description: Calculation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/calculateResponse'
+              examples:
+                addition:
+                  summary: Addition result
+                  value:
+                    operation: addition
+                    numbers: [1, 2, 3, 4]
+                    result: 10
+                division:
+                  summary: Division result
+                  value:
+                    operation: division
+                    numbers: [10, 2]
+                    result: 5
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Forbidden
+        '500':
+          $ref: '#/components/responses/unexpectedError'
+      x-amazon-apigateway-request-validator: Validate body, query string parameters, and headers
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CalculatorFunction.Arn}/invocations
+        httpMethod: POST
+        type: aws_proxy
+
 components:
+  schemas:
+    calculateRequest:
+      type: object
+      required:
+        - operation
+        - numbers
+      properties:
+        operation:
+          type: string
+          description: The mathematical operation to perform
+          enum:
+            - addition
+            - subtraction
+            - multiplication
+            - division
+        numbers:
+          type: array
+          description: Array of numbers to perform the operation on
+          items:
+            type: number
+          minItems: 0
+
+    calculateResponse:
+      type: object
+      required:
+        - operation
+        - numbers
+        - result
+      properties:
+        operation:
+          type: string
+          description: The operation that was performed
+          enum:
+            - addition
+            - subtraction
+            - multiplication
+            - division
+        numbers:
+          type: array
+          description: The input numbers used in the calculation
+          items:
+            type: number
+        result:
+          type: number
+          description: The calculated result
+
   responses:
     unexpectedError:
       description: Unexpected error

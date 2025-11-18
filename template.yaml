@@ -84,6 +84,35 @@ Resources:
         External:
           - '@aws-sdk/client-secrets-manager'
 
+  CalculatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/calculator
+      Events:
+        CalculateEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref API
+            Path: /calculations
+            Method: POST
+      Policies:
+        - AWSLambdaBasicExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Format: esm
+        Minify: false
+        OutExtension:
+          - .js=.mjs
+        Target: es2020
+        Sourcemap: false
+        EntryPoints:
+          - index.mjs
+        Banner:
+          - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
+        External:
+          - '@aws-sdk/client-secrets-manager'
+
 Outputs:
   ApiURL:
     Description: API URL
