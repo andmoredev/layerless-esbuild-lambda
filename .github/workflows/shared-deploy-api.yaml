@@ -37,7 +37,7 @@ jobs:
       COGNITO_USER_POOL_URL: ${{ steps.getStackOutputs.outputs.COGNITO_USER_POOL_URL }}
       COGNITO_CLIENT_ID: ${{ steps.getStackOutputs.outputs.COGNITO_CLIENT_ID }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v5
