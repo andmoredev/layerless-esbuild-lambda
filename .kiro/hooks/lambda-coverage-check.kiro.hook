@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Lambda Coverage Check",
+  "description": "Automatically runs npm coverage when Lambda function handler files are changed to ensure they are covered with unit tests",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/functions/**/index.mjs"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A Lambda function handler file has been modified. Run 'npm run coverage' to verify test coverage for the changed function. Review the coverage report to ensure the handler has adequate unit test coverage. If coverage is insufficient, remind the developer to add or update tests in the corresponding tests/ directory."
+  }
+}
